@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Mr.dizz Tools - Admin Panel</title>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Montserrat', sans-serif;
+            background: #f4f9ff;
+            color: #0a2b3e;
+        }
+
+        /* ========== HALAMAN LOGIN/REGISTER BARU ========== */
+        .auth-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-page::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+        }
+        
+        .auth-page::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -150px;
+        }
+        
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            background: #f0f0f0;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            background: transparent;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+        
+        .auth-tab.active {
+            background: white;
+            color: #2da0a8;
+            border-bottom: 3px solid #2da0a8;
+        }
+        
+        .auth-form {
+            padding: 40px 35px;
+            display: none;
+            animation: fadeInForm 0.4s ease;
+        }
+        
+        .auth-form.active-form {
+            display: block;
+        }
+        
+        @keyframes fadeInForm {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .auth-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #12545c;
+            font-size: 28px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 18px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 48px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 15px;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #2da0a8;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(45, 160, 168, 0.1);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(95deg, #2da0a8, #1f7a85);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 160, 168, 0.4);
+        }
+        
+        .social-login {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .social-login p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-icons a {
+            width: 45px;
+            height: 45px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 20px;
+            transition: 0.2s;
+        }
+        
+        .social-icons a:hover {
+            background: #2da0a8;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+        }
+        
+        .forgot-password a {
+            color: #2da0a8;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        /* maintenance overlay */
+        .maintenance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.94);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: default;
+        }
+        .maintenance-overlay .maintenance-logo {
+            font-size: 80px;
+            margin-bottom: 25px;
+            color: #2da0a8;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .maintenance-overlay .maintenance-logo:active {
+            transform: scale(0.97);
+        }
+        .maintenance-overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .maintenance-overlay p {
+            font-size: 1.2rem;
+            max-width: 400px;
+            opacity: 0.9;
+        }
+        .maintenance-overlay small {
+            margin-top: 30px;
+            opacity: 0.5;
+            font-size: 12px;
+        }
+        
+        /* bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 20px 20px;
+            z-index: 1000;
+            border-top: 1px solid rgba(45, 160, 168, 0.2);
+        }
+        .nav-btn {
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a627a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-btn i { font-size: 22px; color: #2da0a8; transition: 0.2s; }
+        .nav-btn.active { color: #2da0a8; font-weight: 600; }
+        .page-container { padding-bottom: 85px; min-height: 100vh; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .active-page { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:translateY(0);} }
+        .hero-section { background: linear-gradient(145deg, #ffffff 0%, #eef5fc 100%); padding: 30px 20px 20px; }
+        .swiper { width: 100%; border-radius: 32px; box-shadow: 0 15px 35px rgba(0, 20, 30, 0.1); margin-bottom: 35px; }
+        .swiper-slide img { width: 100%; height: 240px; object-fit: cover; border-radius: 32px; display: block; }
+        .slider-caption { text-align: center; margin-top: 12px; font-weight: 500; color: #2c6e6e; }
+        .thin-text {
+            font-weight: 300;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            color: #1f4f5c;
+            text-align: center;
+            margin: 30px 20px 20px;
+            line-height: 1.3;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #2da0a8, #1f7a85);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 8px 18px rgba(45, 160, 168, 0.3);
+            margin: 10px auto;
+            display: inline-block;
+            width: fit-content;
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+        }
+        .btn-primary:hover { transform: scale(1.02); background: linear-gradient(95deg, #268e96, #186870); }
+        .info-card { background: white; border-radius: 2rem; margin: 20px; padding: 30px 24px; box-shadow: 0 12px 28px rgba(0,0,0,0.05); border: 1px solid rgba(45,160,168,0.2); }
+        .info-title { font-size: 2.5rem; font-weight: 800; color: #12545c; margin-bottom: 20px; }
+        .info-desc { font-weight: 300; font-size: 1.2rem; line-height: 1.5; color: #2c5a66; }
+        .profile-container { max-width: 500px; margin: 30px auto; background: white; border-radius: 2rem; padding: 30px 25px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.05); }
+        .avatar {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #c1e4e8, #9fd3db);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 48px;
+            color: #146b75;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+        .avatar:active { transform: scale(0.97); }
+        .profile-name { font-size: 26px; font-weight: 700; color: #0d4952; }
+        .profile-email { color: #56828b; margin: 8px 0 16px; }
+        .logout-btn { background: #fff0f0; border: 1px solid #ffb4b4; color: #c7362b; padding: 12px 28px; border-radius: 40px; font-weight: 600; margin-top: 28px; cursor: pointer; }
+        .home-container { max-width: 1200px; margin: 0 auto; }
+        footer { text-align: center; font-size: 12px; color: #7c9aa6; margin: 20px 0 10px; }
+        
+        /* Admin Modal */
+        .admin-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .admin-modal.active { visibility: visible; opacity: 1; }
+        .admin-card {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 30px 25px;
+            box-shadow: 0 30px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .admin-card h2 { color: #12545c; margin-bottom: 20px; }
+        .admin-card input { width: 100%; padding: 12px 16px; margin: 12px 0; border: 1px solid #ccc; border-radius: 40px; font-size: 1rem; }
+        .admin-card button { background: #2da0a8; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-weight: bold; margin-top: 10px; cursor: pointer; width: 100%; }
+        .admin-card .close-admin { background: #aaa; margin-top: 8px; }
+        .extra-buttons-area { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 20px 0; }
+        .admin-small-btn { background: #2c5a66; color: white; border: none; border-radius: 40px; padding: 8px 16px; margin: 5px; cursor: pointer; }
+        
+        @media (max-width: 600px) { .thin-text { font-size: 1rem; } .btn-primary { font-size: 1rem; padding: 10px 24px; } }
+    </style>
+</head>
+<body>
+
+<!-- ========== HALAMAN LOGIN/REGISTER BARU ========== -->
+<div id="authPage" class="auth-page">
+    <div class="auth-card">
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Sign In</button>
+            <button class="auth-tab" data-tab="register">Sign Up</button>
+        </div>
+        
+        <!-- Form Login -->
+        <div id="loginFormContainer" class="auth-form active-form">
+            <h2>Welcome Back</h2>
+            <form id="loginFormNew">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmailNew" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPasswordNew" placeholder="Password" required>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-google"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form Register -->
+        <div id="registerFormContainer" class="auth-form">
+            <h2>Create Account</h2>
+            <form id="registerFormNew">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="regNameNew" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="regEmailNew" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regPasswordNew" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign Up</button>
+            </form>
+            <div class="social-login">
+                <p>Or sign up with</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-google"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN APP (setelah login) -->
+<div id="appContainer" style="display: none;">
+    <div class="bottom-nav">
+        <button class="nav-btn" data-page="home"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-btn" data-page="information"><i class="fas fa-leaf"></i><span>Information</span></button>
+        <button class="nav-btn" data-page="profile"><i class="fas fa-user-circle"></i><span>Profile</span></button>
+    </div>
+    <div class="page-container">
+        <!-- HOME PAGE -->
+        <div id="homePage" class="page">
+            <div class="home-container">
+                <div class="hero-section">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="https://files.catbox.moe/nyeix8.jpg" alt="Forest"></div>
+                            <div class="swiper-slide"><img src="https://files.catbox.moe/mlsgai.jpg" alt="Green Nature"></div>
+                            <div class="swiper-slide"><img src="https://files.catbox.moe/fzksz6.jpg" alt="Plantation"></div>
+                            <div class="swiper-slide"><img src="https://files.catbox.moe/ze1rgr.jpg" alt="Mountain"></div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div class="slider-caption">✪ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐖𝟑𝐁𝐒𝐈𝐓𝐄 𝐌𝐑. 𝐃𝐈𝐙𝐙</div>
+                </div>
+                <div class="thin-text">“MR.DIZZ TOOLS adalah website penyedia berbagai tools gratis yang membantu kebutuhan digital, mulai dari utility, web tools, generator, hingga fitur keren lainnya. Dengan tampilan simple dan ringan, semua tools dapat digunakan dengan mudah tanpa ribet. Cocok untuk pengguna yang ingin akses cepat, gratis, dan praktis dalam satu tempat. 🚀”</div>
+                
+                <!-- Button BAWAAN -->
+                <div style="text-align: center;">
+                    <a href="https://sipuu.klhk.go.id/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                        <button class="btn-primary" id="defaultButton"><i class="fas fa-seedling" style="margin-right: 8px;"></i> DOWNLOAD THUMBNAIL YT</button>
+                    </a>
+                </div>
+                
+                <!-- EXTRA BUTTONS TAMBAHAN ADMIN -->
+                <div id="extraButtonsContainer" class="extra-buttons-area"></div>
+                
+                <footer>Credit For @fardizz0</footer>
+            </div>
+        </div>
+
+        <!-- INFORMATION PAGE -->
+        <div id="informationPage" class="page">
+            <div class="info-card">
+                <div style="text-align: center;"><img src="https://files.catbox.moe/we5ubg.jpg" alt="info" style="width:100%; max-width:500px; border-radius: 1.8rem;"></div>
+                <div class="info-title">WEBSITE MR. DIZZ RELEASE</div>
+                <div class="info-desc">🚀 Welcome to the new update of Website By Mr.dizz! 🔥<br>Kami terus meningkatkan fitur. ✨</div>
+            </div>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="profilePage" class="page">
+            <div class="profile-container">
+                <div class="avatar" id="clickableAvatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <div class="profile-name" id="profileFullName">Nama Pengguna</div>
+                <div class="profile-email" id="profileEmail">email@example.com</div>
+                <p style="margin: 20px 0 8px;">Bergabung dalam misi penghijauan digital 🌱</p>
+                <button class="logout-btn" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+                <p style="font-size: 11px; margin-top: 20px;">Website By Mr. dizz</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PASSWORD ADMIN -->
+<div id="adminModal" class="admin-modal">
+    <div class="admin-card">
+        <h2><i class="fas fa-lock"></i> Admin Verifikasi</h2>
+        <input type="password" id="adminPasswordInput" placeholder="Masukkan Password">
+        <button id="verifyAdminBtn">Verifikasi</button>
+        <button class="close-admin" id="closeAdminModalBtn">Tutup</button>
+    </div>
+</div>
+
+<!-- MODAL DASHBOARD ADMIN -->
+<div id="adminDashboard" class="admin-modal">
+    <div class="admin-card">
+        <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+        <div style="margin: 15px 0;">
+            <h3>Tambah Button Baru</h3>
+            <input type="text" id="newBtnName" placeholder="Nama Button">
+            <input type="text" id="newBtnLink" placeholder="Link URL (https://...)">
+            <button id="addNewButtonBtn"><i class="fas fa-plus"></i> Tambah Button</button>
+        </div>
+        <hr>
+        <div style="margin: 15px 0;">
+            <h3>Mode Maintenance</h3>
+            <button id="maintenanceToggleBtn" class="admin-small-btn">🔧 Aktifkan Maintenance</button>
+            <p style="font-size:12px; margin-top:8px;">*Klik logo di overlay maintenance 20x untuk mematikan mode</p>
+        </div>
+        <button id="closeDashboardBtn" class="close-admin">Tutup Dashboard</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // ======================= GLOBAL =======================
+    let currentUser = null;
+    let avatarClickCount = 0;
+    let avatarTimer = null;
+    let maintenanceMode = false;
+    let extraButtons = [];
+    let overlayClickCount = 0;
+    let overlayTimer = null;
+    
+    // Load data
+    function loadData() {
+        const savedExtra = localStorage.getItem('mrDizz_extraButtons');
+        if(savedExtra) { try { extraButtons = JSON.parse(savedExtra); } catch(e) { extraButtons = []; } }
+        const savedMaintenance = localStorage.getItem('mrDizz_maintenance');
+        maintenanceMode = savedMaintenance === 'true';
+        renderExtraButtons();
+        applyMaintenanceOverlay();
+    }
+    
+    function renderExtraButtons() {
+        const container = document.getElementById('extraButtonsContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        extraButtons.forEach((btn) => {
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'inline-block';
+            wrapper.style.margin = '5px';
+            const link = document.createElement('a');
+            link.href = btn.link;
+            link.target = '_blank';
+            link.style.textDecoration = 'none';
+            const button = document.createElement('button');
+            button.className = 'btn-primary';
+            button.innerHTML = `<i class="fas fa-link"></i> ${btn.name}`;
+            link.appendChild(button);
+            wrapper.appendChild(link);
+            container.appendChild(wrapper);
+        });
+    }
+    
+    function saveExtraButtons() {
+        localStorage.setItem('mrDizz_extraButtons', JSON.stringify(extraButtons));
+        renderExtraButtons();
+    }
+    
+    function applyMaintenanceOverlay() {
+        let overlay = document.getElementById('globalMaintenanceOverlay');
+        if(maintenanceMode) {
+            if(!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'globalMaintenanceOverlay';
+                overlay.className = 'maintenance-overlay';
+                overlay.innerHTML = `
+                    <div class="maintenance-logo" id="maintenanceLogoOverlay">
+                        <i class="fas fa-tools fa-3x"></i>
+                    </div>
+                    <h1>🔧 WEBSITE SEDANG MAINTENANCE</h1>
+                    <p>Kami sedang melakukan perbaikan. Kembali lagi nanti.</p>
+                    <small>Terima kasih atas pengertiannya</small>
+                `;
+                document.body.appendChild(overlay);
+                const logo = document.getElementById('maintenanceLogoOverlay');
+                if(logo) {
+                    logo.addEventListener('click', () => {
+                        overlayClickCount++;
+                        clearTimeout(overlayTimer);
+                        overlayTimer = setTimeout(() => { overlayClickCount = 0; }, 2000);
+                        if(overlayClickCount >= 20) {
+                            overlayClickCount = 0;
+                            saveMaintenanceState(false);
+                            alert('Maintenance mode dimatikan!');
+                        }
+                    });
+                }
+            }
+        } else {
+            if(overlay) overlay.remove();
+        }
+    }
+    
+    function saveMaintenanceState(state) {
+        maintenanceMode = state;
+        localStorage.setItem('mrDizz_maintenance', state ? 'true' : 'false');
+        applyMaintenanceOverlay();
+        const toggleBtn = document.getElementById('maintenanceToggleBtn');
+        if(toggleBtn) {
+            toggleBtn.textContent = maintenanceMode ? "🟢 Matikan Maintenance" : "🔧 Aktifkan Maintenance";
+        }
+    }
+    
+    function addExtraButton(name, link) {
+        if(!name || !link) return false;
+        if(!link.startsWith('http')) link = 'https://' + link;
+        extraButtons.push({ name, link });
+        saveExtraButtons();
+        return true;
+    }
+    
+    // AUTHENTICATION
+    function showAppAfterLogin(userData) {
+        currentUser = userData;
+        localStorage.setItem('eco_user', JSON.stringify(userData));
+        document.getElementById('authPage').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+        document.getElementById('profileFullName').innerText = currentUser.name;
+        document.getElementById('profileEmail').innerText = currentUser.email;
+        loadData();
+        switchPage('home');
+        initSwiperWhenReady();
+        avatarClickCount = 0;
+    }
+    
+    function handleLogout() {
+        currentUser = null;
+        localStorage.removeItem('eco_user');
+        document.getElementById('authPage').style.display = 'flex';
+        document.getElementById('appContainer').style.display = 'none';
+        document.getElementById('adminModal').classList.remove('active');
+        document.getElementById('adminDashboard').classList.remove('active');
+    }
+    
+    // Tab switching login/register
+    const tabs = document.querySelectorAll('.auth-tab');
+    const loginFormDiv = document.getElementById('loginFormContainer');
+    const registerFormDiv = document.getElementById('registerFormContainer');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            if(tab.dataset.tab === 'login') {
+                loginFormDiv.classList.add('active-form');
+                registerFormDiv.classList.remove('active-form');
+            } else {
+                registerFormDiv.classList.add('active-form');
+                loginFormDiv.classList.remove('active-form');
+            }
+        });
+    });
+    
+    // Login handler baru
+    document.getElementById('loginFormNew')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmailNew').value.trim();
+        const password = document.getElementById('loginPasswordNew').value.trim();
+        const registeredRaw = localStorage.getItem('simulated_user');
+        if(registeredRaw) {
+            const reg = JSON.parse(registeredRaw);
+            if(reg.email === email && reg.password === password) {
+                showAppAfterLogin({ name: reg.name, email: reg.email });
+            } else alert('Email atau password salah!');
+        } else {
+            if(email === "demo@green.com" && password === "123456") {
+                showAppAfterLogin({ name: "Eco Warrior", email: "demo@green.com" });
+            } else alert('Belum mendaftar? Silahkan buat akun terlebih dahulu.');
+        }
+    });
+    
+    // Register handler baru
+    document.getElementById('registerFormNew')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('regNameNew').value.trim();
+        const email = document.getElementById('regEmailNew').value.trim();
+        const password = document.getElementById('regPasswordNew').value.trim();
+        if(!name || !email || !password) return alert('Harap isi semua data!');
+        localStorage.setItem('simulated_user', JSON.stringify({ name, email, password }));
+        alert('Akun berhasil dibuat! Silakan login.');
+        // switch ke tab login
+        document.querySelector('.auth-tab[data-tab="login"]').click();
+        document.getElementById('loginEmailNew').value = email;
+        document.getElementById('loginPasswordNew').value = '';
+    });
+    
+    // Cek session
+    window.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('eco_user');
+        if(saved) {
+            try {
+                const u = JSON.parse(saved);
+                if(u.email) {
+                    currentUser = u;
+                    document.getElementById('authPage').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    document.getElementById('profileFullName').innerText = u.name;
+                    document.getElementById('profileEmail').innerText = u.email;
+                    loadData();
+                    switchPage('home');
+                    initSwiperWhenReady();
+                } else throw new Error();
+            } catch(e) {}
+        }
+    });
+    
+    // Navigation
+    const pages = {
+        home: document.getElementById('homePage'),
+        information: document.getElementById('informationPage'),
+        profile: document.getElementById('profilePage')
+    };
+    function switchPage(pageId) {
+        Object.keys(pages).forEach(key => pages[key]?.classList.remove('active-page'));
+        if(pages[pageId]) pages[pageId].classList.add('active-page');
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if(btn.getAttribute('data-page') === pageId) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        if(pageId === 'home') setTimeout(() => { if(swiperInstance) swiperInstance.update(); else initSwiperWhenReady(); }, 80);
+    }
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchPage(btn.getAttribute('data-page')));
+    });
+    document.getElementById('logoutButton')?.addEventListener('click', handleLogout);
+    
+    // ADMIN RAHASIA (avatar 20x tanpa notifikasi)
+    const avatarElem = document.getElementById('clickableAvatar');
+    if(avatarElem) {
+        avatarElem.addEventListener('click', () => {
+            if(!currentUser) return;
+            avatarClickCount++;
+            if(avatarClickCount >= 20) {
+                avatarClickCount = 0;
+                document.getElementById('adminModal').classList.add('active');
+                document.getElementById('adminPasswordInput').value = '';
+            }
+            clearTimeout(avatarTimer);
+            avatarTimer = setTimeout(() => { avatarClickCount = 0; }, 3000);
+        });
+    }
+    
+    // Verifikasi admin
+    document.getElementById('verifyAdminBtn')?.addEventListener('click', () => {
+        const pwd = document.getElementById('adminPasswordInput').value;
+        if(pwd === "fardiz201221") {
+            document.getElementById('adminModal').classList.remove('active');
+            const dashboard = document.getElementById('adminDashboard');
+            dashboard.classList.add('active');
+            const toggleBtn = document.getElementById('maintenanceToggleBtn');
+            if(toggleBtn) toggleBtn.textContent = maintenanceMode ? "🟢 Matikan Maintenance" : "🔧 Aktifkan Maintenance";
+        } else alert('Password salah!');
+    });
+    
+    document.getElementById('addNewButtonBtn')?.addEventListener('click', () => {
+        const name = document.getElementById('newBtnName').value.trim();
+        let link = document.getElementById('newBtnLink').value.trim();
+        if(!name || !link) { alert('Isi nama dan link!'); return; }
+        addExtraButton(name, link);
+        document.getElementById('newBtnName').value = '';
+        document.getElementById('newBtnLink').value = '';
+        alert('Button baru ditambahkan!');
+    });
+    
+    document.getElementById('maintenanceToggleBtn')?.addEventListener('click', () => {
+        saveMaintenanceState(!maintenanceMode);
+    });
+    
+    document.getElementById('closeDashboardBtn')?.addEventListener('click', () => document.getElementById('adminDashboard').classList.remove('active'));
+    document.getElementById('closeAdminModalBtn')?.addEventListener('click', () => document.getElementById('adminModal').classList.remove('active'));
+    
+    // Swiper
+    let swiperInstance = null;
+    function initSwiperWhenReady() {
+        if(swiperInstance) swiperInstance.destroy(true, true);
+        if(document.querySelector('.swiper') && typeof Swiper !== 'undefined') {
+            swiperInstance = new Swiper('.mySwiper', {
+                loop: true, autoplay: { delay: 3000, disableOnInteraction: false },
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+            });
+        }
+    }
+</script>
+</body>
+</html>
